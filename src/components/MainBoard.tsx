@@ -12,7 +12,7 @@ interface AddNoteResponse {
 }
 
 export const MainBoard = () => {
-  const { notesQuery, addNoteQuery } = useFetchNotes();
+  const { notesQuery, addNoteQuery, deleteNoteQuery } = useFetchNotes();
 
   const addNote = (noteText: string) => {
     const newNote: Note = {
@@ -22,6 +22,10 @@ export const MainBoard = () => {
     };
 
     addNoteQuery.mutate(newNote);
+  };
+
+  const deleteNote = (noteId: number) => {
+    deleteNoteQuery.mutate(noteId);
   };
 
   return (
@@ -34,7 +38,7 @@ export const MainBoard = () => {
         ) : notesQuery.isError ? (
           <p>We're sorry, something went wrong</p>
         ) : (
-          <NotesList notes={notesQuery.data} />
+          <NotesList notes={notesQuery.data} deleteNote={deleteNote} />
         )}
       </main>
       {addNoteQuery.isPending ? (
@@ -45,7 +49,9 @@ export const MainBoard = () => {
             <div>An error occurred: {addNoteQuery.error.message}</div>
           ) : null}
 
-          {addNoteQuery.isSuccess ? <div>Todo added!</div> : null}
+          {addNoteQuery.isSuccess ? (
+            <div>{addNoteQuery.data.message}</div>
+          ) : null}
         </>
       )}
       <ReactQueryDevtools />

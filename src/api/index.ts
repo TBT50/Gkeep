@@ -12,12 +12,20 @@ export const fetchSingleNote = async (id: number) => {
   return data;
 };
 
-export const addNewNote = (newNote: Note) => {
-  return fetch(`http://localhost:8080/notes`, {
+export const addNewNote = async (newNote: Note) => {
+  const response = await fetch(`http://localhost:8080/notes`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(newNote),
+  });
+  const data = await response.json();
+  return data;
+};
+
+export const deleteNote = (noteId: number) => {
+  return fetch(`http://localhost:8080/notes/${noteId}`, {
+    method: "DELETE",
   });
 };
