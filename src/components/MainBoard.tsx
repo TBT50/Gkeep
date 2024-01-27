@@ -3,20 +3,14 @@ import { NotesList } from "./NotesList/NotesList";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-import { Note } from "./../types";
-
 import { useFetchNotes } from "./../hooks/useFetchNotes";
-
-interface AddNoteResponse {
-  message: string;
-}
 
 export const MainBoard = () => {
   const { notesQuery, addNoteQuery, deleteNoteQuery } = useFetchNotes();
+  console.log(notesQuery.error?.message);
 
   const addNote = (noteText: string) => {
-    const newNote: Note = {
-      id: Math.random(),
+    const newNote = {
       title: noteText,
       content: "CONTENT",
     };
@@ -24,7 +18,7 @@ export const MainBoard = () => {
     addNoteQuery.mutate(newNote);
   };
 
-  const deleteNote = (noteId: number) => {
+  const deleteNote = (noteId: string) => {
     deleteNoteQuery.mutate(noteId);
   };
 
@@ -36,7 +30,7 @@ export const MainBoard = () => {
         {notesQuery.isLoading ? (
           <p>LOADING...</p>
         ) : notesQuery.isError ? (
-          <p>We're sorry, something went wrong</p>
+          <p>We're sorry, something went wrong. {notesQuery.error.message}</p>
         ) : (
           <NotesList notes={notesQuery.data} deleteNote={deleteNote} />
         )}

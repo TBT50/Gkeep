@@ -1,11 +1,14 @@
-import { Note } from "./../../types";
+import { NotesListResponse } from "./../../types";
 
 type NotesListProps = {
-  notes: Note[];
-  deleteNote: (noteId: number) => void;
+  notes: NotesListResponse[] | undefined;
+  deleteNote: (noteId: string) => void;
 };
 
 export const NotesList = ({ notes, deleteNote }: NotesListProps) => {
+  if (!notes || notes.length === 0) {
+    return <p className="py-4">The list of notes is empty</p>;
+  }
   return (
     <ul className="grid grid-cols-1 md:grid-cols-4 gap-4 py-4">
       {notes.map((note) => (

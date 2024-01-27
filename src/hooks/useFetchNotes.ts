@@ -1,11 +1,17 @@
 import { addNewNote, fetchNotes, fetchSingleNote, deleteNote } from "@/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-export const useFetchNotes = (id?: number) => {
+export const useFetchNotes = (id?: string) => {
   const queryClient = useQueryClient();
-  const notesQuery = useQuery({ queryKey: ["notes"], queryFn: fetchNotes });
+  const notesQuery = useQuery({
+    queryKey: ["notes"],
+    queryFn: fetchNotes,
+  });
   const singleNoteQuery = id
-    ? useQuery({ queryKey: ["notes", id], queryFn: () => fetchSingleNote(id) })
+    ? useQuery({
+        queryKey: ["notes", id],
+        queryFn: () => fetchSingleNote(id),
+      })
     : null;
 
   const addNoteQuery = useMutation({
